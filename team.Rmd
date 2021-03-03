@@ -1,11 +1,61 @@
 ---
 title: "Lab 3"
 author: "Anders Lie"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-```{r setup}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 dat <- readxl::read_xls('GSS.xls')
 ```
+
+# Data Cleaning
+```{r warning=FALSE}
+# Change names
+dat <- dat %>%
+  rename(
+    survey_year=`Gss year for this respondent`,
+    god=`Rs confidence in the existence of god`,
+    happiness=`General happiness`,
+    lib_or_consv = `Think of self as liberal or conservative`,
+    polparty = `Political party affiliation`,
+    fam_income = `Total family income`,
+    race = `Race of respondent`,
+    sex = `Respondents sex`,
+    years_edu = `Highest year of school completed`,
+    age = `Age of respondent`,
+    marital_status = `Marital status`,
+    weekly_hrs_worked = `Number of hours usually work a week`,
+    id = `Respondent id number`,
+    ballot = `Ballot used for interview`
+  )
+
+# Reformat years of education and age to numeric
+dat <- dat %>%
+  mutate(
+    years_edu=as.numeric(years_edu),
+    age=as.numeric(age)
+  )
+```
+
+# 1
+
+```{r}
+dat %>% 
+  group_by(marital_status) %>%
+  summarize(avg_edu_years=mean(years_edu, na.rm=TRUE)) %>%
+  arrange(desc(avg_edu_years)) %>%
+  rename(`Marital Status`=marital_status, `Average Number of Years of Education`=avg_edu_years)
+```
+
+We can see that people who did not answer about their marital status have significantly
+higher education on average, for some reason. Also, those who were widowed or separated have less
+education on average than those who were never married, divorced, or are married.
+
+
+
+
+
 
