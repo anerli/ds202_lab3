@@ -1,0 +1,11 @@
+---
+title: "Lab 3"
+author: "Anders Lie"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+dat <- readxl::read_xls('GSS.xls')
+```
+
