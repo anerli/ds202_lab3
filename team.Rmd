@@ -54,7 +54,17 @@ We can see that people who did not answer about their marital status have signif
 higher education on average, for some reason. Also, those who were widowed or separated have less
 education on average than those who were never married, divorced, or are married.
 
+# 2
+```{r}
+better_educated <- dat %>%
+  group_by(marital_status) %>%
+  mutate(avg_edu_years=mean(years_edu, na.rm=TRUE)) %>%
+  filter(years_edu > avg_edu_years) %>%
+  select(-avg_edu_years) %>%
+  ungroup
 
+str(better_educated)
+```
 
 
 
