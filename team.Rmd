@@ -205,3 +205,26 @@ surveyed at these ranges, so this variation could just be due to the people sele
 # ii.
 
 Next, we explore the relationship between the amount of weekly hours worked on average and happiness.
+
+```{r}
+# Clean up weekly hours worked
+dat1 <- dat1 %>% filter(!is.na(weekly_hrs_worked) & weekly_hrs_worked != 'Not applicable' & weekly_hrs_worked != "Don't know" & weekly_hrs_worked != 'No answer')
+dat1$weekly_hrs_worked <- as.numeric(dat1$weekly_hrs_worked)
+dat1 %>% ggplot(aes(x=happiness, y=weekly_hrs_worked)) + geom_boxplot() + xlab('Happiness') + ylab('Hours Worked per Week on Average')
+```
+
+We can actually see that generally, happiness increases as work hours per week increases. However,
+one thing to note is that there are no outliers for 0 hours worked and not happy, whereas there are some outliers
+for pretty happy and very happy who do not work at all, which goes against the general trend.
+
+```{r}
+dat1 %>% 
+  group_by(happiness) %>%
+  summarize(avg_hrs_worked=mean(weekly_hrs_worked, na.rm=TRUE)) %>%
+  arrange(desc(avg_hrs_worked)) %>%
+  rename(`Happiness`=happiness, `Average Number of Hours Worked per Week`=avg_hrs_worked)
+```
+
+Looking at the above numerical summary though, we can see that the average number of hours
+worked per week does not change very much with happiness. So although there is a general
+trend that more hours worked correlates with more happiness, the trend is very subtle.
