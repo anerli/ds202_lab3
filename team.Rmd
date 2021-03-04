@@ -138,8 +138,7 @@ ggplot(dat1, aes(x=polparty, fill=hap_bool)) + geom_bar(position='dodge') +
 ```
 
 We can see that many people who took the survey were democrats, and that many of them were happy.
-However, if we look at the republicans who took the survey, the ratio of happy to unhappy
-to people is higher.
+However, if we look at the republicans who took the survey, the ratio of happy to unhappy people is higher.
 
 # 5
 ```{r}
@@ -185,8 +184,9 @@ dat1$fam_income <- fct_infreq(dat1$fam_income)
 ggplot(dat1, aes(x=fam_income, fill=happiness)) + geom_bar(position='dodge') +
   xlab('Income Range') + ylab('Number of People') + labs(fill="Happiness") + coord_flip()
 ```
+
 This gives us a good idea of how many people from each income range where not happy,
-pretty happy, or not too happy. WE can see that a lot of people who surveyed had >= $25000 income,
+pretty happy, or not too happy. We can see that a lot of people who surveyed had >= $25000 income,
 and that most of them were happy. On the other hand, people making less than $1000 were significantly
 less happy. We can see exactly how happy these income ranges were on average with a numerical summary:
 
