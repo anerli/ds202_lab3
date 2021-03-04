@@ -167,3 +167,11 @@ dat$marital_status <- fct_infreq(dat$marital_status)
 ggplot(dat, aes(x=marital_status, fill=hap_bool)) + geom_bar(position='dodge')
 
 
+
+
+
+#dat1$marital_status <- fct_infreq(dat1$marital_status)
+#dat1$marital_status <- factor(dat1$marital_status, levels=c('No answer', ))
+#dat1$marital_status <- factor(dat1$marital_status, levels=unique(order(dat1$marital_status)))
+#dat1 <- dat1 %>%
+#  arrange(marital_status, years_edu)

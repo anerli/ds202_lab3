@@ -66,6 +66,142 @@ better_educated <- dat %>%
 str(better_educated)
 ```
 
+# 3
+```{r}
+dat <- dat %>%
+  mutate(hap_val=
+          ifelse(happiness == 'Very happy', 2,
+          ifelse(happiness == 'Pretty happy', 1,
+          ifelse(happiness == 'Not too happy', 0, NA
+          )))
+        )
+
+dat %>%
+  group_by(marital_status) %>%
+  summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %>%
+  arrange(desc(avg_happiness_val))
+```
+
+If we define happiness on a scale from 0 (Not too happy) to 2 (Very happy)
+then we can group by marital status and see that on average, people who are
+married are happiest, while people who are separated are the least happy.
+
+```{r}
+dat <- dat %>%
+  mutate(hap_bool=
+          ifelse(hap_val >= 1, TRUE,
+          ifelse(hap_val == 0, FALSE, NA
+          ))
+        )
+
+```
+
+We can also group people's happiness into TRUE (i.e. they are happy) if they say
+they are "Very happy" or "Pretty happy", and FALSE (i.e. not happy) if they say
+they are "Not too happy". In this case, we can explore the categorizations of happiness
+by marital status like so:
+
+```{r}
+dat1 <- dat %>% filter(!is.na(hap_bool))
+dat1$marital_status <- fct_infreq(dat1$marital_status)
+ggplot(dat1, aes(x=marital_status, fill=hap_bool)) + geom_bar(position='dodge') +
+  xlab('Marital Status') + ylab('Number of People') + labs(fill="Happy?")
+```
+
+We can see that a lot of people who took the survey were married or never married,
+and that there are a lot of happy married people. Also, the proportion of happy to unhappy people
+seems to be higher for those who were married or never married as opposed to those
+who were divorced, widowed, or separated.
+
+# 4
+
+```{r}
+dat %>%
+  group_by(polparty) %>%
+  summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %>%
+  arrange(desc(avg_happiness_val))
+```
+
+Viewing the average happiness value again, except grouping by political party,
+we can see that in general, people affiliated with the republican party are happiest,
+while those who are independent near democratic, affiliated with some other party,
+or independent, are the least happy.
+
+```{r}
+dat1 <- dat %>% filter(!is.na(hap_bool))
+dat1$polparty <- fct_infreq(dat1$polparty)
+ggplot(dat1, aes(x=polparty, fill=hap_bool)) + geom_bar(position='dodge') +
+  xlab('Political Party Affiliation') + ylab('Number of People') + labs(fill="Happy?") +
+  coord_flip()
+```
+
+We can see that many people who took the survey were democrats, and that many of them were happy.
+However, if we look at the republicans who took the survey, the ratio of happy to unhappy
+to people is higher.
+
+# 5
+```{r}
+dat1 <- dat %>% filter(!is.na(years_edu))
+dat1$marital_status <- fct_reorder(dat1$marital_status, dat1$years_edu, .desc=TRUE, .fun=mean, na.rm=TRUE)
+ggplot(dat1, aes(x=marital_status, y=years_edu)) + geom_boxplot() +
+  xlab('Marital Status') + ylab('Years of education')
+```
+
+As we can see, those who did not answer about their marital status have greater education on average,
+followed by those who were never married, then those who are divorced, then those who are married, 
+those who separated, and finally those who were widowed had the least years of education on average.
 
 
+We can also perform a similar numerical summary:
 
+```{r}
+dat1 %>% 
+  group_by(marital_status) %>%
+  summarize(avg_edu_years=mean(years_edu, na.rm=TRUE)) %>%
+  arrange(desc(avg_edu_years)) %>%
+  rename(`Marital Status`=marital_status, `Average Number of Years of Education`=avg_edu_years)
+```
+
+This gives us the exactly average number of years of education for each marital status.
+
+It's difficult to attribute possible reasons for these correlations. However, perhaps it makes
+sense that those who were never married have more years of education that those who are married,
+since those who are unmarried only have their own disposable income, but a higher education
+can make that income greater. Those who were widowed might have lower education on average
+because they are more likely to be in poor conditions mentally or financially which could detract
+from their ability or willingness to go to school.
+
+# 6
+## i.
+
+First, we explore the relationship between total family income and happiness.
+
+```{r}
+dat1 <- dat %>% filter(!is.na(hap_val) & !is.na(fam_income))
+dat1 <- dat1 %>% filter(fam_income != 'No answer' & fam_income != "Don't know" & fam_income != 'Refused' & fam_income != 'Not applicable')
+dat1$fam_income <- fct_infreq(dat1$fam_income)
+ggplot(dat1, aes(x=fam_income, fill=happiness)) + geom_bar(position='dodge') +
+  xlab('Income Range') + ylab('Number of People') + labs(fill="Happiness") + coord_flip()
+```
+This gives us a good idea of how many people from each income range where not happy,
+pretty happy, or not too happy. WE can see that a lot of people who surveyed had >= $25000 income,
+and that most of them were happy. On the other hand, people making less than $1000 were significantly
+less happy. We can see exactly how happy these income ranges were on average with a numerical summary:
+
+```{r}
+dat1 %>% 
+  group_by(fam_income) %>%
+  summarize(avg_hap_val=mean(hap_val, na.rm=TRUE)) %>%
+  arrange(desc(avg_hap_val)) %>%
+  rename(`Income Range`=fam_income, `Average Hapiness (0-2)`=avg_hap_val)
+```
+
+For the most part, this summary makes sense. Generally, higher income means higher average happiness.
+However, there are some ranges that are in an order one might not expect. For example,
+the \$7000 to 7999 and \$5000 to 5999 ranges are happier on average than the \$8000 to 9999 range, and the
+\$4000 to 6999 range is happier than the $6000 to 6999 range. However, there are not a lot of people
+surveyed at these ranges, so this variation could just be due to the people selected.
+
+# ii.
+
+Next, we explore the relationship between the amount of weekly hours worked on average and happiness.
