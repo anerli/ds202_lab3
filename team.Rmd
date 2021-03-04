@@ -79,7 +79,8 @@ dat <- dat %>%
 dat %>%
   group_by(marital_status) %>%
   summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %>%
-  arrange(desc(avg_happiness_val))
+  arrange(desc(avg_happiness_val)) %>%
+  rename(`Marital Status`=marital_status, `Average Happiness (0-2)`=avg_happiness_val)
 ```
 
 If we define happiness on a scale from 0 (Not too happy) to 2 (Very happy)
@@ -119,7 +120,8 @@ who were divorced, widowed, or separated.
 dat %>%
   group_by(polparty) %>%
   summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %>%
-  arrange(desc(avg_happiness_val))
+  arrange(desc(avg_happiness_val)) %>%
+  rename(`Political Party Affiliation`=polparty, `Average Happiness (0-2)`=avg_happiness_val)
 ```
 
 Viewing the average happiness value again, except grouping by political party,

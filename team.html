@@ -1745,10 +1745,11 @@ str(better_educated)</code></pre>
 dat %&gt;%
   group_by(marital_status) %&gt;%
   summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %&gt;%
-  arrange(desc(avg_happiness_val))</code></pre>
+  arrange(desc(avg_happiness_val)) %&gt;%
+  rename(`Marital Status`=marital_status, `Average Happiness (0-2)`=avg_happiness_val)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["marital_status"],"name":[1],"type":["chr"],"align":["left"]},{"label":["avg_happiness_val"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Married","2":"1.327888"},{"1":"No answer","2":"1.100000"},{"1":"Never married","2":"1.053136"},{"1":"Widowed","2":"1.044712"},{"1":"Divorced","2":"1.006160"},{"1":"Separated","2":"0.880000"},{"1":"NA","2":"NaN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Marital Status"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Average Happiness (0-2)"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Married","2":"1.327888"},{"1":"No answer","2":"1.100000"},{"1":"Never married","2":"1.053136"},{"1":"Widowed","2":"1.044712"},{"1":"Divorced","2":"1.006160"},{"1":"Separated","2":"0.880000"},{"1":"NA","2":"NaN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If we define happiness on a scale from 0 (Not too happy) to 2 (Very happy) then we can group by marital status and see that on average, people who are married are happiest, while people who are separated are the least happy.</p>
@@ -1771,10 +1772,11 @@ ggplot(dat1, aes(x=marital_status, fill=hap_bool)) + geom_bar(position=&#39;dodg
 <pre class="r"><code>dat %&gt;%
   group_by(polparty) %&gt;%
   summarize(avg_happiness_val=mean(hap_val, na.rm=TRUE)) %&gt;%
-  arrange(desc(avg_happiness_val))</code></pre>
+  arrange(desc(avg_happiness_val)) %&gt;%
+  rename(`Political Party Affiliation`=polparty, `Average Happiness (0-2)`=avg_happiness_val)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["polparty"],"name":[1],"type":["chr"],"align":["left"]},{"label":["avg_happiness_val"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Strong republican","2":"1.331300"},{"1":"Not str republican","2":"1.265084"},{"1":"Ind,near rep","2":"1.215683"},{"1":"Don't know","2":"1.181818"},{"1":"No answer","2":"1.168116"},{"1":"Strong democrat","2":"1.159429"},{"1":"Not str democrat","2":"1.153046"},{"1":"Independent","2":"1.129264"},{"1":"Other party","2":"1.124254"},{"1":"Ind,near dem","2":"1.117615"},{"1":"NA","2":"NaN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Political Party Affiliation"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Average Happiness (0-2)"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Strong republican","2":"1.331300"},{"1":"Not str republican","2":"1.265084"},{"1":"Ind,near rep","2":"1.215683"},{"1":"Don't know","2":"1.181818"},{"1":"No answer","2":"1.168116"},{"1":"Strong democrat","2":"1.159429"},{"1":"Not str democrat","2":"1.153046"},{"1":"Independent","2":"1.129264"},{"1":"Other party","2":"1.124254"},{"1":"Ind,near dem","2":"1.117615"},{"1":"NA","2":"NaN"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Viewing the average happiness value again, except grouping by political party, we can see that in general, people affiliated with the republican party are happiest, while those who are independent near democratic, affiliated with some other party, or independent, are the least happy.</p>
